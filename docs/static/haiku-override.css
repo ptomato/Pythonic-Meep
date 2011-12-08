@@ -8,7 +8,6 @@ body {
 
 tt {
     font-family: "Bitstream Vera Mono", "DejaVu Sans Mono", Consolas, Monospace;
-	font-size: 90%
 }
 
 h1, h2, h3, h4 {
@@ -21,11 +20,14 @@ div.footer {
 }
 
 div.section {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
-h1, h2, h3, h4  {
+div.section h1,
+div.section h2,
+div.section h3,
+div.section h4  {
     margin-left: -50px;
     margin-right: -50px;
 }
@@ -52,6 +54,7 @@ dl.class > dt {
 	background: #ad7fa8;
 	padding: 10px;
 	margin-bottom: 0;
+	color: white;
 }
 
 dl.class > dd {
@@ -65,10 +68,6 @@ dl.class > dd {
 	padding: 10px;
 	margin-top: 0;
 	margin-left: 0;
-}
-
-dl.class > dt {
-	color: white;
 }
 
 em.property {
