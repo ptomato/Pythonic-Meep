@@ -271,13 +271,30 @@ class Geometry(HasDimensions):
 
 
 class Polygon(HasDimensions):
-    
+    """
+    Base class which represents a generic region of the simulation domain.
+    """
     def __init__(self):
         HasDimensions.__init__(self)
 
 
 class Block(Polygon):
+    """
+    Represents a block-shaped region of the simulation domain (in any number of
+    dimensions.) Strictly speaking, the shape is a rectangular cuboid; but in
+    common parlance it is a line in one dimension, a rectangle in two, and a
+    cuboid in three.
     
+    :param center: coordinates of where the center of the block should be
+       located.
+    :type center: sequence of numbers or ``None``
+    :param size: extent of each side of the block. A side may be infinitely
+       long, represented by :data:`numpy.inf`.
+    :type size: sequence of numbers or ``None``
+    :param material: material which the block should be made of.
+    :type material: :class:`~meep.Material` or a numerical value for the
+       relative dielectric constant to create a new material
+    """
     def __init__(self, center=None, size=None, material=air):
         Polygon.__init__(self)
         if center is not None:
@@ -288,6 +305,11 @@ class Block(Polygon):
     
     @property
     def center(self):
+        """
+        Coordinates of where the center of the block is located.
+        
+        :rtype: :class:`numpy.ndarray`
+        """
         return self._center
     
     @center.setter
@@ -297,6 +319,12 @@ class Block(Polygon):
     
     @property
     def size(self):
+        """
+        The extent of each side of the block. A side may be infinitely long,
+        represented by :data:`numpy.inf`.
+        
+        :rtype: :class:`numpy.ndarray`
+        """
         return self._size
     
     @size.setter
@@ -306,6 +334,13 @@ class Block(Polygon):
     
     @property
     def material(self):
+        """
+        The material which the block is made of. If this is set to a numerical
+        value, then a new :class:`~meep.Dielectric` is created using that value
+        as the relative dielectric constant.
+        
+        :rtype: :class:`~meep.Material`
+        """
         return self._material
     
     @material.setter
@@ -395,7 +430,15 @@ class ContinuousSource(Source):
     
     
 class PML(object):
+    """
+    Represents a :abbr:`PML (perfectly matched layer)`. Add it to the simulation
+    domain using :meth:`Geometry.add_pml() <meep.Geometry.add_pml>`. 
     
+    .. note::
+       Currently, only PMLs of uniform thickness on all edges of the simulation
+       domain are supported. Therefore, it doesn't make sense to create more
+       than one PML.
+    """
     def __init__(self, thickness):
         object.__init__(self)
         self._instance = _meep.pml(thickness)
