@@ -357,7 +357,22 @@ class Block(Polygon):
 
 
 class Source(HasDimensions):
-    
+    """
+    Base class which represents a current source located somewhere in the
+    simulation domain.
+
+    :param component: field component that the source excites.
+    :type component: ``'ex'``, ``'ey'``, ``'ez'``
+    :param center: coordinates of where the center of the source should be
+       located.
+    :type center: sequence of numbers or ``None``
+    :param size: extent of each side of the source. A side may be infinitely
+       long, represents by :data:`numpy.inf`.
+    :type size: sequence of numbers or ``None``
+    :param amplitude: complex amplitude of the source. Currently only single
+       values are allowed.
+    :type amplitude: number
+    """
     def __init__(self, component='ex', size=None, center=None, amplitude=1.0):
         HasDimensions.__init__(self)
         self.component = component
@@ -371,6 +386,11 @@ class Source(HasDimensions):
         
     @property
     def component(self):
+        """
+        Field component that the source excites.
+
+        :rtype: string
+        """
         return self._component
     
     @component.setter
@@ -381,6 +401,13 @@ class Source(HasDimensions):
     
     @property
     def size(self):
+        """
+        The extent of each side of the source. A side may be infinitely long,
+        represented by :data:`numpy.inf`.
+
+        :rtype: one-dimensional :class:`numpy.ndarray` with length equal to the
+           number of dimensions of the source.
+        """
         return self._size
     
     @size.setter
@@ -389,10 +416,20 @@ class Source(HasDimensions):
         self._size = N.array(value)
     
     def is_point_source(self):
+        """
+        Whether this source is a point source (zero size in all dimensions) or
+        not.
+        """
         return (self.size == 0.0).all()
     
     @property
     def center(self):
+        """
+        Coordinates of where the center of the source is located.
+
+        :rtype: one-dimensional :class:`numpy.ndarray` with length equal to the
+           number of dimensions of the source.
+        """
         return self._center
     
     @center.setter
@@ -401,7 +438,19 @@ class Source(HasDimensions):
         self._center = N.array(value)
 
 class ContinuousSource(Source):
-    
+    """
+    Represents a harmonic current source with a certain frequency and a
+    continuous amplitude in time.
+
+    :param frequency: frequency of the source, in Meep units.
+    :type frequency: number
+    :param wavelength: vacuum wavelength of the source.
+    :type wavelength: number
+
+    .. note::
+       ``wavelength`` and ``frequency`` are two ways of specifying the same
+       thing. You cannot give both keywords at the same time.
+    """
     def __init__(self, wavelength=None, frequency=None, component='ex',
         size=None, center=None):
         Source.__init__(self, component, size, center)
@@ -422,6 +471,10 @@ class ContinuousSource(Source):
     
     @property
     def frequency(self):
+        """
+        Frequency of the source, in Meep units. A frequency in Meep units is
+        equal to 1 over the vacuum wavelength.
+        """
         return _meep.continuous_src_time_get_frequency(self._instance)
     
     @frequency.setter
