@@ -84,3 +84,27 @@ a.headerlink:hover {
 	color: white;
 	text-decoration: none;
 }
+
+/* Figure stuff */
+
+div.figure {
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: thin;
+	border-color: #babdb6;
+	padding: 10px;
+	background: #eeeeec;
+}
+
+div.figure > img {
+	border-style: solid;
+	border-width: thin;
+	border-color: #babdb6;
+}
+
+p.caption {
+	font-size: 80%;
+}
