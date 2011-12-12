@@ -126,6 +126,11 @@ class HasDimensions(object):
         :meth:`~meep.HasDimensions.must_agree` property must match the number
         of dimensions.
         
+        If the number of dimensions was previously determined, but the property
+        is reset to ``None``, then that does not reset the number of dimensions
+        to be indeterminate, even if the object has no other
+        :meth:`~meep.HasDimensions.must_agree` properties.
+        
         For example:
         
         .. doctest::
@@ -150,15 +155,19 @@ class HasDimensions(object):
             >>> point.coordinates = (2, 3)
             >>> point.dimensions
             2
+            >>> point.coordinates = None
+            >>> point.dimensions
+            2
             
         """
         def wrapper(self, value):
-            num_dimensions = len(value)
-            if self._dimensions is None:
-                self._dimensions = num_dimensions
-            elif self._dimensions != num_dimensions:
-                raise ValueError('{} coordinates have wrong number of dimensions, '
-                    'expected {}'.format(setter.__name__, self._dimensions))
+            if value is not None:
+                num_dimensions = len(value)
+                if self._dimensions is None:
+                    self._dimensions = num_dimensions
+                elif self._dimensions != num_dimensions:
+                    raise ValueError('{} has wrong number of dimensions, '
+                        'expected {}'.format(setter.__name__, self._dimensions))
             setter(self, value)
         return wrapper
 
