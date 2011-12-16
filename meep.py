@@ -511,7 +511,14 @@ class PML(object):
 
 
 class Simulation(object):
-    
+    """
+    This is the object used to control the simulation itself. It performs the
+    FDTD simulations on a geometry which you specify, and allows you to retrieve
+    quantities calculated during the simulation.
+
+    :param geometry: the simulation geometry.
+    :type geometry: :class:`~meep.Geometry`
+    """
     def __init__(self, geometry):
         object.__init__(self)
         self.geometry = geometry
@@ -528,7 +535,17 @@ class Simulation(object):
         self._fields_instance = _meep.fields_new(self._structure_instance);
         
         self.epsilon = Quantity('epsilon', self)
+        """
+        The dielectric function of the simulation geometry.
+
+        :type: :class:`~meep.Quantity`
+        """
         self.efield = Quantity('efield', self)
+        """
+        The electric field in the simulation geometry.
+
+        :type: :class:`~meep.Quantity`
+        """
         
         for source in geometry._sources:
             if source.is_point_source():
@@ -551,10 +568,16 @@ class Simulation(object):
         _meep.fields_destroy(self._fields_instance)
     
     def step(self):
+        """
+        Runs the simulation for one time step.
+        """
         _meep.fields_step(self._fields_instance)
     
     @property
     def time(self):
+        """
+        The current time in the simulation.
+        """
         return _meep.fields_time(self._fields_instance)
 
 
