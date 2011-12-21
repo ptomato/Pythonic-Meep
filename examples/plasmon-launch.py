@@ -11,7 +11,6 @@ a = 1e-6  # Length unit used in simulation = 1 micron
 res = 50  # Pixels per length unit
 size = (7.0, 3.0)  # Size of computational domain
 wl = 0.83 # Source wavelength
-timesteps = 150
 
 def eV_to_meep_frequency(ev, a):
     """Convert a frequency @ev in eV to Meep units. @a is the length
