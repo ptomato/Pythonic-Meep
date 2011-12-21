@@ -5,6 +5,7 @@ Tutorial
    :maxdepth: 2
    
    tutorial
+   tutorial-plasmonic
 
 API Reference
 =============
