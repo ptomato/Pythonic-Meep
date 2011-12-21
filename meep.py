@@ -538,6 +538,11 @@ class Simulation(object):
         """
         The dielectric function of the simulation geometry.
 
+        Note that if you have a material with polarizability resonances, this
+        does not return the complex dielectric function, since that is
+        wavelength-dependent. The quantity here is :math:`\epsilon_\infty`, the
+        dielectric constant in the limit of high frequencies.
+
         :type: :class:`~meep.Quantity`
         """
         self.efield = Quantity('efield', self)
@@ -582,7 +587,12 @@ class Simulation(object):
 
 
 class Quantity(HasDimensions):
-    
+    """
+    Represents a quantity calculated in the simulation. Do not create your own
+    instances of this class; use the instances in :class:`~meep.Simulation`.
+
+    You can convert the quantity to a NumPy array using :func:`numpy.array`.
+    """
     def __init__(self, component, simulation, complex=None):
         HasDimensions.__init__(self)
         self._dimensions = simulation.geometry.dimensions
@@ -612,6 +622,12 @@ class Quantity(HasDimensions):
     
     @property
     def component(self):
+        """
+        The quantity being represented. ``dielectric`` is a synonym for
+        ``epsilon``.
+
+        :rtype: ``'epsilon'``, ``'dielectric'``, ``'efield'``
+        """
         return self._component
     
     @component.setter
@@ -627,6 +643,9 @@ class Quantity(HasDimensions):
         self._component = value.lower()
     
     def output_hdf5(self):
+        """
+        Write this quantity to an HDF5 file.
+        """
         _meep.meep_fields_output_hdf5(self._fields_instance,
             self.component,
             self._grid_volume_instance)
