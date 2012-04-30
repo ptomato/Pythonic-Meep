@@ -125,7 +125,7 @@ static PyMethodDef MeepMethods[] = {
         meep_continuous_src_time_set_frequency, METH_VARARGS },
     { "pml", meep_pml, METH_VARARGS },
     { "boundary_region_destroy", meep_boundary_region_destroy, METH_O },
-    { "structure_new", meep_structure_new, METH_VARARGS },
+    { "structure_new", meep_structure_new, METH_VARARGS | METH_KEYWORDS },
     { "structure_destroy", meep_structure_destroy, METH_O },
     { "structure_add_polarizability", meep_structure_add_polarizability,
         METH_VARARGS },
