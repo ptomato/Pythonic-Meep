@@ -163,7 +163,8 @@ meep_fields_get_ndarray(PyObject *self, PyObject *args)
     char *component_str;
     meep::component component;
     unsigned ndims;
-    int x, y, z, dims[3];
+    npy_intp dims[3];
+    int x, y, z;
     std::complex<double> *ptr;
     meep::vec coordinate;
     
