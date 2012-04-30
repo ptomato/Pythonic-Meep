@@ -26,7 +26,7 @@ ez = N.array(simulation.efield)[..., 2].real
 
 # Display epsilon
 from scipy.misc import imsave
-imsave('docs/static/tutorial-epsilon.png', -N.rot90(epsilon))
+imsave('../docs/static/tutorial-epsilon.png', -N.rot90(epsilon))
 
 # Pick a nice limit for the color scale
 limit = N.abs(ez).max()
