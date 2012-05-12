@@ -6,14 +6,14 @@
 class RegionMaterial : public meep::material_function {
 
 public:
-    RegionMaterial() : 
+    RegionMaterial() :
         regions(),
         region_epsilons(),
         polarizability_region_sigmas(),
         polarizabilities(),
         current_polarizability(-1)
     { }
-    
+
     // Overrides
     double chi1p1(meep::field_type ft, const meep::vec &r);
     void sigma_row(meep::component c, double sigrow[3], const meep::vec &r);
@@ -23,9 +23,9 @@ public:
     unsigned add_region(const meep::volume &volume);
     unsigned get_num_regions(void) { return regions.size(); }
     void set_region_epsilon(unsigned region, double eps);
-    void add_region_polarizability(unsigned region, double sigma, 
+    void add_region_polarizability(unsigned region, double sigma,
         double omega, double gamma);
-    
+
 private:
     std::vector<meep::volume> regions;
     std::vector<double> region_epsilons;

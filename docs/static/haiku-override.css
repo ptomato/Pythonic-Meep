@@ -3,7 +3,7 @@
 body {
     font-family: "Droid Serif", Cambria, Serif;
 	min-width: 500px;
-	max-width: auto;
+	max-width: 100%;
 }
 
 tt {
@@ -15,8 +15,8 @@ h1, h2, h3, h4 {
 }
 
 /* Get rid of letter spacing in footer */
-div.footer {
-	letter-spacing: 0px;
+.footer {
+	letter-spacing: 0;
 }
 
 div.section {
@@ -70,7 +70,7 @@ dl.class > dd {
 	margin-left: 0;
 }
 
-em.property {
+.property {
 	margin-right: 3px;
 }
 
@@ -105,6 +105,6 @@ div.figure > img {
 	border-color: #babdb6;
 }
 
-p.caption {
+.caption {
 	font-size: 80%;
 }

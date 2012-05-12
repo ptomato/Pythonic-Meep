@@ -16,7 +16,7 @@ meep_vol2d(PyObject *self, PyObject *args)
     // Create a heap-allocated pointer from the stack-allocated grid volume
     meep::grid_volume *heap_volume = new meep::grid_volume(volume);
     heap_volume->center_origin();
-    
+
     return Py_BuildValue("O&", convert_to_object, heap_volume);
 }
 

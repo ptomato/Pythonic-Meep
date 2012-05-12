@@ -54,7 +54,7 @@ This can be consolidated into an expression more similar to Meep's internal mode
     f_Au = N.array([0.760, 0.024, 0.010, 0.071, 0.601, 4.384])
     # Damping frequency (eV)
     gamma_Au = N.array([0.053, 0.241, 0.345, 0.870, 2.494, 2.214])
-    # Resonance frequency (eV) 
+    # Resonance frequency (eV)
     omega_Au = N.array([0.000, 0.415, 0.830, 2.969, 4.304, 13.32])
 
 .. [#Rakic1998] Rakić, A. D., Djurišić, A. B., Elazar, J. M., & Majewski, M. L. (1998). Optical properties of metallic films for vertical-cavity optoelectronic devices. *Applied Optics 37* (22), pp. 5271–5283. *This paper contains good approximations for the dielectric functions of several metals, including gold and silver.*

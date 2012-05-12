@@ -1,6 +1,5 @@
 import numpy as N
-import scipy as S
-import scipy.constants as Const
+from scipy import constants as Const
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as P
@@ -10,7 +9,8 @@ import meep
 a = 1e-6  # Length unit used in simulation = 1 micron
 res = 50  # Pixels per length unit
 size = (7.0, 3.0)  # Size of computational domain
-wl = 0.83 # Source wavelength
+wl = 0.83  # Source wavelength
+
 
 def eV_to_meep_frequency(ev, a):
     """Convert a frequency @ev in eV to Meep units. @a is the length
@@ -19,15 +19,15 @@ def eV_to_meep_frequency(ev, a):
     return freq / (2.0 * N.pi * Const.c / a)
 
 # Create material that simulates gold with dispersion
-plasma_freq = 9.03 #eV
-f_Au = N.array([0.760, 0.024, 0.010, 0.071, 0.601, 4.384]) # Oscillator strengths
-gamma_Au = N.array([0.053, 0.241, 0.345, 0.870, 2.494, 2.214]) # Damping (eV)
-omega_Au = N.array([0.000, 0.415, 0.830, 2.969, 4.304, 13.32]) # Resonance (eV)
+plasma_freq = 9.03  # eV
+f_Au = N.array([.760, .024, .010, .071, .601, 4.384])  # Oscillator strengths
+gamma_Au = N.array([.053, .241, .345, 0.870, 2.494, 2.214])  # Damping (eV)
+omega_Au = N.array([0.00, .415, .830, 2.969, 4.304, 13.32])  # Resonance (eV)
 # Convert those parameters to Meep units
 omega_p_norm = eV_to_meep_frequency(plasma_freq, a)
 gamma_norm = eV_to_meep_frequency(gamma_Au, a)
 omega_norm = eV_to_meep_frequency(omega_Au, a)
-omega_norm[0] = 1e-20 # Needs to be a small number but not zero
+omega_norm[0] = 1e-20  # Needs to be a small number but not zero
 sigma_norm = f_Au * omega_p_norm ** 2.0 / omega_norm ** 2.0
 
 gold = meep.Dielectric(epsilon=1.0)

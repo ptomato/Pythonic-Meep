@@ -33,7 +33,7 @@ convert_to_pointer(PyObject *object, void *address)
 }
 
 // Convert component to meep::component
-// component should be guaranteed by the Python module to be a 
+// component should be guaranteed by the Python module to be a
 // valid lowercase string
 bool
 component_from_cstring(const char *cstring, meep::component *component)
@@ -56,7 +56,7 @@ component_from_cstring(const char *cstring, meep::component *component)
     return true;
 }
 
-// Convert coordinate tuple (or any Python object supporting the 
+// Convert coordinate tuple (or any Python object supporting the
 // sequence protocol) to meep vector with the proper number of
 // dimensions. Returns a heap-allocated meep::vec.
 meep::vec *
@@ -71,7 +71,7 @@ vector_from_tuple(PyObject *sequence)
     // Convert the sequence to a tuple
     int num_dimensions = PySequence_Length(center_tuple);
     PyObject **coords = PySequence_Fast_ITEMS(center_tuple);
-    
+
     meep::vec *v;
     switch(num_dimensions) {
         case 1:
@@ -92,7 +92,7 @@ vector_from_tuple(PyObject *sequence)
             Py_DECREF(center_tuple);
             return NULL;
     }
-    
+
     Py_DECREF(center_tuple);
     return v;
 }

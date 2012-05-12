@@ -38,7 +38,7 @@ find_polarizability(double omega, double gamma)
     if(iter == polarizabilities.end())
     	return -1;
     return iter - polarizabilities.begin(); // index of iterator
-}    
+}
 
 double RegionMaterial::
 chi1p1(meep::field_type ft, const meep::vec &r)
@@ -46,7 +46,7 @@ chi1p1(meep::field_type ft, const meep::vec &r)
     // mu
     if(ft == meep::H_stuff)
         return 1.0;
-    
+
     // epsilon
     int region = find_region_for_point(r);
     if(region == -1)
@@ -62,11 +62,11 @@ sigma_row(meep::component c, double sigrow[3], const meep::vec &r)
 			<< std::endl;
 		return;
 	}
-	
+
     int region = find_region_for_point(r);
     sigrow[0] = sigrow[1] = sigrow[2] = 0.0;
     if(region != -1) {
-        sigrow[meep::component_index(c)] = 
+        sigrow[meep::component_index(c)] =
             polarizability_region_sigmas
             [(unsigned)current_polarizability]
             [(unsigned)region];
@@ -114,13 +114,13 @@ add_region_polarizability(unsigned region, double sigma, double omega,
     	region_sigmas.resize(get_num_regions(), 0.0);
     	region_sigmas[region] = sigma;
         polarizability_region_sigmas.push_back(region_sigmas);
-        
+
         polarizabilities.push_back(std::make_pair(omega, gamma));
-        
+
         current_polarizability = polarizabilities.size() - 1;
         return;
     }
-    
+
     polarizability_region_sigmas[index][region] = sigma;
 
     // Set the current polarizability as well
@@ -155,13 +155,13 @@ region_material_add_region(PyObject *self, PyObject *args)
 {
     RegionMaterial *material;
     PyObject *point1_seq, *point2_seq;
-    
+
     if(!PyArg_ParseTuple(args, "O&OO",
         convert_to_pointer, &material,
         &point1_seq,
         &point2_seq))
         return NULL;
-    
+
     meep::vec *point1 = vector_from_tuple(point1_seq);
     if(!point1)
         return NULL;
@@ -173,9 +173,9 @@ region_material_add_region(PyObject *self, PyObject *args)
     meep::volume volume(*point1, *point2);
     delete point1;
     delete point2;
-    
+
     unsigned region = material->add_region(volume);
-    
+
     return Py_BuildValue("I", region);
 }
 
@@ -186,15 +186,15 @@ region_material_set_region_epsilon(PyObject *self, PyObject *args)
     RegionMaterial *material;
     unsigned region;
     double epsilon;
-    
+
     if(!PyArg_ParseTuple(args, "O&Id",
         convert_to_pointer, &material,
         &region,
         &epsilon))
         return NULL;
-    
+
     material->set_region_epsilon(region, epsilon);
-    
+
     Py_RETURN_NONE;
 }
 
@@ -205,7 +205,7 @@ region_material_add_region_polarizability(PyObject *self, PyObject *args)
     RegionMaterial *material;
     unsigned region;
     double sigma, omega, gamma;
-    
+
     if(!PyArg_ParseTuple(args, "O&Iddd",
         convert_to_pointer, &material,
         &region,
@@ -213,10 +213,10 @@ region_material_add_region_polarizability(PyObject *self, PyObject *args)
         &omega,
         &gamma))
         return NULL;
-    
+
     material->add_region_polarizability(region, sigma, omega, gamma);
-    
+
     Py_RETURN_NONE;
 }
-    
+
 } // extern "C"

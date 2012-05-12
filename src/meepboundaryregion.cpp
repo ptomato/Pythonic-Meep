@@ -14,7 +14,7 @@ meep_pml(PyObject *self, PyObject *args)
     meep::boundary_region pml = meep::pml(thickness);
     // Create a heap-allocated pointer from the stack-allocated boundary region
     meep::boundary_region *heap_pml = new meep::boundary_region(pml);
-    
+
     return Py_BuildValue("O&", convert_to_object, heap_pml);
 }
 

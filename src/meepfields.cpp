@@ -16,9 +16,9 @@ meep_fields_new(PyObject *self, PyObject *object)
 {
     meep::structure *structure;
     convert_to_pointer(object, &structure);
-    
+
     meep::fields *instance = new meep::fields(structure);
-    
+
     return Py_BuildValue("O&", convert_to_object, instance);
 }
 
@@ -41,7 +41,7 @@ meep_fields_add_point_source(PyObject *self, PyObject *args)
     meep::src_time *source;
     PyObject *center_sequence;
     Py_complex py_amplitude = { 1.0, 0.0 };
-    
+
     if(!PyArg_ParseTuple(args, "O&sO&O|D",
         convert_to_pointer, &fields,
         &component_cstring,
@@ -49,20 +49,20 @@ meep_fields_add_point_source(PyObject *self, PyObject *args)
         &center_sequence,
         &py_amplitude))
         return NULL;
-    
+
     meep::component component;
     if(!component_from_cstring(component_cstring, &component))
         return NULL;
-    
+
     meep::vec *center = vector_from_tuple(center_sequence);
     if(!center)
         return NULL;
-    
+
     // Convert amplitude to complex<double>
     std::complex<double> amplitude(py_amplitude.real, py_amplitude.imag);
-    
+
     fields->add_point_source(component, *source, *center, amplitude);
-    
+
     delete center;
     Py_RETURN_NONE;
 }
@@ -76,7 +76,7 @@ meep_fields_add_volume_source(PyObject *self, PyObject *args)
     meep::src_time *source;
     PyObject *point1_seq, *point2_seq;
     Py_complex py_amplitude = { 1.0, 0.0 };
-    
+
     if(!PyArg_ParseTuple(args, "O&sO&OO|D",
         convert_to_pointer, &fields,
         &component_cstring,
@@ -85,11 +85,11 @@ meep_fields_add_volume_source(PyObject *self, PyObject *args)
         &point2_seq,
         &py_amplitude))
         return NULL;
-    
+
     meep::component component;
     if(!component_from_cstring(component_cstring, &component))
         return NULL;
-    
+
     meep::vec *point1 = vector_from_tuple(point1_seq);
     if(!point1)
         return NULL;
@@ -101,12 +101,12 @@ meep_fields_add_volume_source(PyObject *self, PyObject *args)
     meep::volume volume(*point1, *point2);
     delete point1;
     delete point2;
-    
+
     // Convert amplitude to complex<double>
     std::complex<double> amplitude(py_amplitude.real, py_amplitude.imag);
-    
+
     fields->add_volume_source(component, *source, volume, amplitude);
-    
+
     Py_RETURN_NONE;
 }
 
@@ -116,7 +116,7 @@ meep_fields_time(PyObject *self, PyObject *instance)
 {
     meep::fields *fields;
     convert_to_pointer(instance, &fields);
-    
+
     return PyFloat_FromDouble(fields->time());
 }
 
@@ -126,9 +126,9 @@ meep_fields_step(PyObject *self, PyObject *instance)
 {
     meep::fields *fields;
     convert_to_pointer(instance, &fields);
-    
+
     fields->step();
-    
+
     Py_RETURN_NONE;
 }
 
@@ -144,13 +144,13 @@ meep_fields_output_hdf5(PyObject *self, PyObject *args)
         &component_str,
         convert_to_pointer, &volume))
         return NULL;
-    
+
     meep::component component;
     if(!component_from_cstring(component_str, &component))
         return NULL;
-    
+
     fields->output_hdf5(component, volume->surroundings());
-    
+
     Py_RETURN_NONE;
 }
 
@@ -167,16 +167,16 @@ meep_fields_get_ndarray(PyObject *self, PyObject *args)
     int x, y, z;
     std::complex<double> *ptr;
     meep::vec coordinate;
-    
+
     if(!PyArg_ParseTuple(args, "O&O&s",
         convert_to_pointer, &fields,
         convert_to_pointer, &volume,
         &component_str))
         return NULL;
-    
+
     if(!component_from_cstring(component_str, &component))
         return NULL;
-    
+
     switch(volume->dim) {
     case meep::D1:
         ndims = 1;
@@ -198,10 +198,10 @@ meep_fields_get_ndarray(PyObject *self, PyObject *args)
             "not supported yet.");
         return NULL;
     }
-    
+
     PyObject *ndarray = PyArray_SimpleNew(ndims, dims, NPY_CDOUBLE);
     ptr = (std::complex<double> *)PyArray_DATA(ndarray);
-    
+
     switch(ndims) {
     case 1:
         coordinate = meep::vec(volume->xmin());
@@ -240,6 +240,6 @@ meep_fields_get_ndarray(PyObject *self, PyObject *args)
 
     return ndarray;
 }
-    
+
 
 } // extern "C"
